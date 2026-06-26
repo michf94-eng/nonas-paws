@@ -1,0 +1,7 @@
+api_version = "2025-01"
+
+[[extensions]]
+type = "theme"
+name = "Virtual Try-On"
+handle = "virtual-tryon-block"
+uid = "8cbf45ac-3a90-a124-7b92-bd023bc2596dde224eef"

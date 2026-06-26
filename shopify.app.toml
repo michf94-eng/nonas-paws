@@ -1,0 +1,19 @@
+name = "nonas-paws-virtual-tryon"
+client_id = "2e760486dba74eff2777dbd18a552b13"
+application_url = "https://example.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "nonas-paws-dev.myshopify.com"
+
+[access_scopes]
+scopes = "read_products,read_product_listings"
+
+[auth]
+redirect_urls = [
+  "https://example.com/auth/callback"
+]
+
+[webhooks]
+api_version = "2025-01"

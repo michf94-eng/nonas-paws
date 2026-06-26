@@ -1,0 +1,16 @@
+{
+  "virtual_tryon": {
+    "button_label": "Virtual Fitting Room",
+    "modal_title": "Virtual Fitting Room",
+    "modal_subtitle": "See how it looks on your pup!",
+    "breed_label": "Dog breed",
+    "breed_placeholder": "Choose a breed…",
+    "fur_label": "Fur color",
+    "generate_btn": "✨ Generate Try-On",
+    "try_another": "🔄 Try Another Dog",
+    "add_to_cart": "🛒 Add to Cart",
+    "coming_soon": "📸 Upload your own dog — coming soon!",
+    "loading": "Dressing your pup…",
+    "error_generic": "Something went wrong. Please try again."
+  }
+}

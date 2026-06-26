@@ -1,0 +1,206 @@
+{% comment %}
+  Nona's Paws – Virtual Try-On App Block
+  Renders the "Virtual Fitting Room" button on product pages.
+  Reads product metafields for try-on configuration.
+{% endcomment %}
+
+{% assign product_type    = product.metafields.nonas_paws.product_type   | default: product.type %}
+{% assign pattern_image   = product.metafields.nonas_paws.pattern_image %}
+{% assign border_color    = product.metafields.nonas_paws.border_color   | default: '#F9A8C9' %}
+{% assign logo_color      = product.metafields.nonas_paws.logo_color     | default: '#FFFFFF' %}
+{% assign transparent_img = product.metafields.nonas_paws.transparent_product_image %}
+
+<div
+  id="np-tryon-root"
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-type="{{ product_type | escape }}"
+  data-product-price="{{ product.selected_or_first_available_variant.price | money }}"
+  data-pattern-image="{{ pattern_image }}"
+  data-border-color="{{ border_color | escape }}"
+  data-logo-color="{{ logo_color | escape }}"
+  data-transparent-img="{{ transparent_img }}"
+  data-api-base="{{ block.settings.api_base_url }}"
+>
+
+  {%- comment -%} ── Button ── {%- endcomment -%}
+  <button
+    class="np-tryon-btn"
+    onclick="NpTryOn.open()"
+    aria-haspopup="dialog"
+  >
+    <span class="np-tryon-btn__icon" aria-hidden="true">🐾</span>
+    Virtual Fitting Room
+  </button>
+
+  {%- comment -%} ── Modal ── {%- endcomment -%}
+  <div
+    id="np-tryon-modal"
+    class="np-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Virtual Fitting Room"
+    hidden
+  >
+    <div class="np-modal__backdrop" onclick="NpTryOn.close()"></div>
+
+    <div class="np-modal__panel">
+
+      {%- comment -%} Header {%- endcomment -%}
+      <header class="np-modal__header">
+        <div class="np-modal__logo">
+          <span aria-hidden="true">🐾</span> Nona's Paws
+        </div>
+        <h2 class="np-modal__title">Virtual Fitting Room</h2>
+        <p class="np-modal__subtitle">See how it looks on your pup!</p>
+        <button class="np-modal__close" onclick="NpTryOn.close()" aria-label="Close">✕</button>
+      </header>
+
+      {%- comment -%} Product badge {%- endcomment -%}
+      <div class="np-modal__product-badge">
+        <span class="np-badge__label">Trying on:</span>
+        <span class="np-badge__name">{{ product.title }}</span>
+      </div>
+
+      {%- comment -%} Steps {%- endcomment -%}
+      <div class="np-steps">
+        <div class="np-step np-step--active" id="np-step-1">
+          <span class="np-step__num">1</span>
+          <span class="np-step__label">Pick a dog</span>
+        </div>
+        <div class="np-step__connector"></div>
+        <div class="np-step" id="np-step-2">
+          <span class="np-step__num">2</span>
+          <span class="np-step__label">See the fit!</span>
+        </div>
+      </div>
+
+      {%- comment -%} Selector panel {%- endcomment -%}
+      <div class="np-panel" id="np-panel-select">
+
+        <div class="np-field">
+          <label class="np-label" for="np-breed">Dog breed</label>
+          <select class="np-select" id="np-breed">
+            <option value="">Choose a breed…</option>
+            <option value="golden_retriever">Golden Retriever</option>
+            <option value="labrador">Labrador</option>
+            <option value="poodle">Poodle</option>
+            <option value="french_bulldog">French Bulldog</option>
+            <option value="beagle">Beagle</option>
+            <option value="corgi">Corgi</option>
+            <option value="dachshund">Dachshund</option>
+            <option value="shih_tzu">Shih Tzu</option>
+            <option value="border_collie">Border Collie</option>
+            <option value="german_shepherd">German Shepherd</option>
+            <option value="pomeranian">Pomeranian</option>
+            <option value="yorkshire_terrier">Yorkshire Terrier</option>
+          </select>
+        </div>
+
+        <div class="np-field">
+          <label class="np-label">Fur color</label>
+          <div class="np-fur-grid" role="radiogroup" aria-label="Fur color">
+            <label class="np-fur-swatch" style="--swatch:#C8976E" title="Golden">
+              <input type="radio" name="np-fur" value="golden" hidden>
+              <span class="np-swatch__ring"></span>
+            </label>
+            <label class="np-fur-swatch" style="--swatch:#5C3D2E" title="Brown">
+              <input type="radio" name="np-fur" value="brown" hidden>
+              <span class="np-swatch__ring"></span>
+            </label>
+            <label class="np-fur-swatch" style="--swatch:#1A1A1A" title="Black">
+              <input type="radio" name="np-fur" value="black" hidden>
+              <span class="np-swatch__ring"></span>
+            </label>
+            <label class="np-fur-swatch" style="--swatch:#E8E0D5" title="Cream">
+              <input type="radio" name="np-fur" value="cream" hidden>
+              <span class="np-swatch__ring"></span>
+            </label>
+            <label class="np-fur-swatch" style="--swatch:#9E7B5C" title="Tan">
+              <input type="radio" name="np-fur" value="tan" hidden>
+              <span class="np-swatch__ring"></span>
+            </label>
+            <label class="np-fur-swatch" style="--swatch:#808080" title="Grey">
+              <input type="radio" name="np-fur" value="grey" hidden>
+              <span class="np-swatch__ring"></span>
+            </label>
+            <label class="np-fur-swatch np-fur-swatch--multi" title="Multi / Spotted">
+              <input type="radio" name="np-fur" value="multi" hidden>
+              <span class="np-swatch__ring"></span>
+              <span class="np-swatch__multi-label">🎨</span>
+            </label>
+          </div>
+        </div>
+
+        <button
+          class="np-btn np-btn--primary"
+          id="np-generate-btn"
+          onclick="NpTryOn.generate()"
+          disabled
+        >
+          ✨ Generate Try-On
+        </button>
+
+        <p class="np-footnote">📸 Upload your own dog — coming soon!</p>
+      </div>
+
+      {%- comment -%} Result panel {%- endcomment -%}
+      <div class="np-panel np-panel--hidden" id="np-panel-result">
+
+        <div class="np-result">
+          <div class="np-result__image-wrap" id="np-result-wrap">
+            <img
+              id="np-result-img"
+              class="np-result__image"
+              src=""
+              alt="Virtual try-on result"
+            />
+            <div class="np-result__spinner" id="np-spinner" hidden>
+              <div class="np-spinner__ring"></div>
+              <p>Dressing your pup…</p>
+            </div>
+          </div>
+
+          <div class="np-result__meta" id="np-result-meta" hidden>
+            <p class="np-result__dog-name" id="np-result-dog-name"></p>
+          </div>
+        </div>
+
+        <div class="np-result__actions">
+          <button class="np-btn np-btn--ghost" onclick="NpTryOn.reset()">
+            🔄 Try Another Dog
+          </button>
+          <button class="np-btn np-btn--primary" onclick="NpTryOn.addToCart()">
+            🛒 Add to Cart
+          </button>
+        </div>
+
+      </div>
+
+      {%- comment -%} Error state {%- endcomment -%}
+      <div class="np-error" id="np-error" hidden>
+        <p id="np-error-msg">Something went wrong. Please try again.</p>
+        <button class="np-btn np-btn--ghost" onclick="NpTryOn.reset()">Try again</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{{ 'virtual-tryon.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'virtual-tryon.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Virtual Try-On",
+  "target": "section",
+  "settings": [
+    {
+      "type": "url",
+      "id": "api_base_url",
+      "label": "API Base URL",
+      "info": "Base URL de tu backend (e.g. https://tu-app.com)"
+    }
+  ]
+}
+{% endschema %}
