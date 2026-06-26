@@ -140,7 +140,9 @@
       };
 
       try {
-        const apiUrl = `${getApiBase()}/api/generate-tryon`;
+        const apiUrl = `function getApiBase () {
+    return 'https://nonas-paws-production.up.railway.app';
+  };
         const res    = await fetch(apiUrl, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
